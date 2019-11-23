@@ -9,23 +9,74 @@ public class Player : MonoBehaviour
 
     public int movementSpeed = 40;
     public float jumpForce = 5;
-    //float gyroOffset = 0;
 
     public GameObject countdownTimerGO; 
-    private TextMeshProUGUI countdownTimer;
+    TextMeshProUGUI countdownTimer;
 
     public float relativeRotation = 90;
-    public bool movingAlongX = true;
 
 
     // These are used to determine when player has moved 50 blocks to generate 50 more
-    public float xPosLastTrigger = 0;
-    public float zPosLastTrigger = 0;
+    float xPosLastTrigger = 0;
+    float zPosLastTrigger = 0;
+
+    public float windowForRotation = 1;
+    bool movingAlongX = true;
 
 
 
+    public GameObject FindClosestPathBlock()
+    {
+        GameObject[] gos;
+        gos = GameObject.FindGameObjectsWithTag("PathBlockTurn");
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        Vector3 position = transform.position;
+        foreach (GameObject go in gos)
+        {
+            Vector3 diff = go.transform.position - position;
+            float curDistance = diff.sqrMagnitude;
+            if (curDistance < distance)
+            {
+                closest = go;
+                distance = curDistance;
+            }
+        }
+        return closest;
+    }
 
-    void turnRight()
+
+    public bool CenterPlayerAndReturnIfPossible()
+    {
+        // Generate 50 path block to be safe ...
+        GameObject.FindGameObjectWithTag("PathGenerator").GetComponent<PathGenerator>().generatePath();
+
+        // Calculate distance for both x and z
+        bool closeX = Mathf.Abs(FindClosestPathBlock().transform.position.x - transform.position.x) < windowForRotation;
+        bool closeZ = Mathf.Abs(FindClosestPathBlock().transform.position.z - transform.position.z) < windowForRotation;
+
+        // Check for x distance is movingAlongX else check for z
+        if (movingAlongX && closeX)
+        {
+            transform.position = new Vector3(FindClosestPathBlock().transform.position.x, .5f, FindClosestPathBlock().transform.position.z);
+            return true;
+        }
+        else if (!movingAlongX && closeZ)
+        {
+            transform.position = new Vector3(FindClosestPathBlock().transform.position.x, .5f, FindClosestPathBlock().transform.position.z);
+            return true;
+        }
+        else
+        {
+            // Die
+            Debug.Log("Die");
+            return false;
+        }
+    }
+
+
+
+    void TurnRight()
     {
         if (relativeRotation >= 270)
         {
@@ -35,13 +86,18 @@ public class Player : MonoBehaviour
         {
             relativeRotation += 90;
         }
-        transform.Rotate(0, 90, 0, Space.World);
-        movingAlongX = !movingAlongX;
         xPosLastTrigger = transform.position.x;
         zPosLastTrigger = transform.position.z;
+
+        if (CenterPlayerAndReturnIfPossible())
+        {
+            transform.Rotate(0, 90, 0, Space.World);
+        }
+
+        movingAlongX = !movingAlongX;
     }
 
-    void turnLeft()
+    void TurnLeft()
     {
         if (relativeRotation <= 0)
         {
@@ -51,10 +107,15 @@ public class Player : MonoBehaviour
         {
             relativeRotation += -90;
         }
-        transform.Rotate(0, -90, 0, Space.World);
-        movingAlongX = !movingAlongX;
         xPosLastTrigger = transform.position.x;
         zPosLastTrigger = transform.position.z;
+
+        if (CenterPlayerAndReturnIfPossible())
+        {
+            transform.Rotate(0, -90, 0, Space.World);
+        }
+
+        movingAlongX = !movingAlongX;
     }
 
 
@@ -92,11 +153,11 @@ public class Player : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.A)) {
-            turnLeft();
+            TurnLeft();
         }
 
         if (Input.GetKeyDown(KeyCode.D)) {
-            turnRight();
+            TurnRight();
         }
 
 
@@ -126,11 +187,11 @@ public class Player : MonoBehaviour
         // Rotate 90 degrees when a swipe is detected
         if (data.Direction == SwipeDirection.Right)
         {
-            turnRight();
+            TurnRight();
         }
         else if (data.Direction == SwipeDirection.Left)
         {
-            turnLeft();
+            TurnLeft();
         }
         else if (data.Direction == SwipeDirection.Up)
         {
