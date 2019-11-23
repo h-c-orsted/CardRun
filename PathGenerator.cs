@@ -7,18 +7,20 @@ public class PathGenerator : MonoBehaviour
 
     public GameObject groundPrefab;
     public GameObject triggerPrefab;
+    public GameObject turnPrefab;
     public GameObject cardPrefab;
 
 
     int rotation = 0;
     public Quaternion pathRotation = Quaternion.Euler(0, 0, 0);
     public Vector3 instancePosition = new Vector3(0, 0, 0);
+      
 
 
     void Start()
     {
         generatePath(150, false);
-        Instantiate(cardPrefab, new Vector3(50, 0, 0), Quaternion.Euler(0,0,0));
+        Instantiate(cardPrefab, new Vector3(5, 1.3f, 0), Quaternion.Euler(0,0,0));
     }
 
 
@@ -32,9 +34,6 @@ public class PathGenerator : MonoBehaviour
             int randomNumber = Random.Range(-1, 2);
             int newRotation = Mathf.RoundToInt(pathRotation.y) + randomNumber;
 
-            Debug.Log(randomNumber);
-            Debug.Log(newRotation);
-
             // Update rotation quaternion and variable
             pathRotation = Quaternion.Euler(0, newRotation * 90, 0);
 
@@ -44,15 +43,15 @@ public class PathGenerator : MonoBehaviour
                 switch (newRotation)
                 {
                     case -1:
-                        Instantiate(groundPrefab, instancePosition - new Vector3(0, 0, 1), pathRotation);
+                        Instantiate(turnPrefab, instancePosition - new Vector3(0, 0, 1), pathRotation);
                         break;
 
                     case 0:
-                        Instantiate(groundPrefab, instancePosition - new Vector3(1, 0, 0), pathRotation);
+                        Instantiate(turnPrefab, instancePosition - new Vector3(1, 0, 0), pathRotation);
                         break;
 
                     case 1:
-                        Instantiate(groundPrefab, instancePosition - new Vector3(0, 0, -1), pathRotation);
+                        Instantiate(turnPrefab, instancePosition - new Vector3(0, 0, -1), pathRotation);
                         break;
 
                 }
@@ -63,17 +62,10 @@ public class PathGenerator : MonoBehaviour
 
 
         // Generate blocks
-        for (int i=0; i<count; i++)
+        for (int i = 0; i < count; i++)
         {
-            // Every 50 block, place a trigger block. Else place normal non-trigger block
-            if (i % 50 == 0)
-            {
-                Instantiate(triggerPrefab, instancePosition, pathRotation);
-            }
-            else
-            {
-                Instantiate(groundPrefab, instancePosition, pathRotation);
-            }
+            // Generate block 
+            Instantiate(groundPrefab, instancePosition, pathRotation);
 
 
             // Add 1 to instance position in whatever direction the rotation is
