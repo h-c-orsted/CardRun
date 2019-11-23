@@ -132,13 +132,13 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Mathf.FloorToInt(Time.time) < 19)
+        if (Mathf.FloorToInt(Time.timeSinceLevelLoad) < 19)
         {
-            countdownTimer.SetText("{0:0}", 19 - Mathf.FloorToInt(Time.time));
+            countdownTimer.SetText("{0:0}", 19 - Mathf.FloorToInt(Time.timeSinceLevelLoad));
         } else
         {
             countdownTimer.SetText("GO!");
-            if (Mathf.FloorToInt(Time.time) >= 21)
+            if (Mathf.FloorToInt(Time.timeSinceLevelLoad) >= 21)
             {
                 countdownTimerGO.SetActive(false);
             }

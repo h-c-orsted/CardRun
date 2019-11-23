@@ -14,7 +14,7 @@ public class GroundBlockDelete : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Mathf.FloorToInt(Time.time) > 19)
+        if (Mathf.FloorToInt(Time.timeSinceLevelLoad) > 19)
         {
             // Get diff of this block's position on x and z axis and player to determine if the player touches this block
             float xAxis = Mathf.Abs(transform.position.x - player.transform.position.x);
