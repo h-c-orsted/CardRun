@@ -146,9 +146,11 @@ public class Player : MonoBehaviour
         {
             countdownTimer.SetText("{0:0}", 19 - Mathf.FloorToInt(Time.timeSinceLevelLoad));
             scoreTextGO.SetActive(false);
-        } else
+        } else if (Mathf.FloorToInt(Time.timeSinceLevelLoad) >= 18 && Mathf.FloorToInt(Time.timeSinceLevelLoad) < 21)
         {
             countdownTimer.SetText("GO!");
+        } else
+        {
             scoreTextGO.SetActive(true);
             if (Mathf.FloorToInt(Time.timeSinceLevelLoad) == 21)
             {
