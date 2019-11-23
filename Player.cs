@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public float relativeRotation = 90;
 
     public int score = 0;
+    public bool isDead = false;
 
 
     // These are used to determine when player has moved 50 blocks to generate 50 more
@@ -74,7 +75,10 @@ public class Player : MonoBehaviour
         else
         {
             // Die
-            Debug.Log("Die");
+            //Debug.Log("Die");
+            isDead = true;
+            countdownTimer.SetText("Dead");
+            countdownTimerGO.SetActive(true);
             return false;
         }
     }
@@ -141,14 +145,22 @@ public class Player : MonoBehaviour
         if (Mathf.FloorToInt(Time.timeSinceLevelLoad) < 19)
         {
             countdownTimer.SetText("{0:0}", 19 - Mathf.FloorToInt(Time.timeSinceLevelLoad));
+            scoreTextGO.SetActive(false);
         } else
         {
             countdownTimer.SetText("GO!");
-            if (Mathf.FloorToInt(Time.timeSinceLevelLoad) >= 21)
+            scoreTextGO.SetActive(true);
+            if (Mathf.FloorToInt(Time.timeSinceLevelLoad) == 21)
             {
                 countdownTimerGO.SetActive(false);
             }
-            transform.Translate(0, 0, movementSpeed * Time.deltaTime);
+
+
+            // Move player every frame after countdown
+            if (!isDead)
+            {
+                transform.Translate(0, 0, movementSpeed * Time.deltaTime);
+            }
         }
 
 
