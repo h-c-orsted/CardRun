@@ -14,10 +14,52 @@ public class Player : MonoBehaviour
     public GameObject countdownTimerGO; 
     private TextMeshProUGUI countdownTimer;
 
+    public float relativeRotation = 90;
+    public bool movingAlongX = true;
+
 
     // These are used to determine when player has moved 50 blocks to generate 50 more
     public float xPosLastTrigger = 0;
     public float zPosLastTrigger = 0;
+
+
+
+
+    void turnRight()
+    {
+        if (relativeRotation >= 270)
+        {
+            relativeRotation = 0;
+        }
+        else
+        {
+            relativeRotation += 90;
+        }
+        Debug.Log("Rotation" + relativeRotation);
+        transform.Rotate(0, 90, 0, Space.World);
+        movingAlongX = !movingAlongX;
+        xPosLastTrigger = transform.position.x;
+        zPosLastTrigger = transform.position.z;
+    }
+
+    void turnLeft()
+    {
+        if (relativeRotation <= 0)
+        {
+            relativeRotation = 270;
+        }
+        else
+        {
+            relativeRotation += -90;
+        }
+        Debug.Log("Rotation" + relativeRotation);
+        transform.Rotate(0, -90, 0, Space.World);
+        movingAlongX = !movingAlongX;
+        xPosLastTrigger = transform.position.x;
+        zPosLastTrigger = transform.position.z;
+    }
+
+
 
     
     void Start()
@@ -52,15 +94,11 @@ public class Player : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.A)) {
-            transform.Rotate(0, -90, 0, Space.World);
-            xPosLastTrigger = transform.position.x;
-            zPosLastTrigger = transform.position.z;
+            turnLeft();
         }
 
         if (Input.GetKeyDown(KeyCode.D)) {
-            transform.Rotate(0, 90, 0, Space.World);
-            xPosLastTrigger = transform.position.x;
-            zPosLastTrigger = transform.position.z;
+            turnRight();
         }
 
 
@@ -90,15 +128,11 @@ public class Player : MonoBehaviour
         // Rotate 90 degrees when a swipe is detected
         if (data.Direction == SwipeDirection.Right)
         {
-            transform.Rotate(0, 90, 0, Space.World);
-            xPosLastTrigger = transform.position.x;
-            zPosLastTrigger = transform.position.z;
+            turnRight();
         }
         else if (data.Direction == SwipeDirection.Left)
         {
-            transform.Rotate(0, -90, 0, Space.World);
-            xPosLastTrigger = transform.position.x;
-            zPosLastTrigger = transform.position.z;
+            turnLeft();
         }
         else if (data.Direction == SwipeDirection.Up)
         {
