@@ -13,7 +13,12 @@ public class Player : MonoBehaviour
     public GameObject countdownTimerGO; 
     TextMeshProUGUI countdownTimer;
 
+    public GameObject scoreTextGO;
+    TextMeshProUGUI scoreText;
+
     public float relativeRotation = 90;
+
+    public int score = 0;
 
 
     // These are used to determine when player has moved 50 blocks to generate 50 more
@@ -124,6 +129,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         countdownTimer = countdownTimerGO.GetComponent<TextMeshProUGUI>();
+        scoreText = scoreTextGO.GetComponent<TextMeshProUGUI>();
 
         xPosLastTrigger = transform.position.x;
         zPosLastTrigger = transform.position.z;
@@ -144,6 +150,11 @@ public class Player : MonoBehaviour
             }
             transform.Translate(0, 0, movementSpeed * Time.deltaTime);
         }
+
+
+        // Calculate score based on how far the player has traveled and set score text. If score is below 0 (which it is in countdown, then set to 0)
+        score = Mathf.FloorToInt(movementSpeed * (Time.timeSinceLevelLoad - 19)) < 0 ? 0 : Mathf.FloorToInt(movementSpeed * (Time.timeSinceLevelLoad - 19));
+        scoreText.SetText("{0:0}", score);
 
 
         // This is for testing purpose so that we don't need a phone to activate swipe gestures
