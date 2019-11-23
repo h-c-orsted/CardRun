@@ -52,7 +52,7 @@ public class SmoothCamera : MonoBehaviour
             }
 
             newRot = Quaternion.Euler(new Vector3(15f, target.rotation.eulerAngles.y, 0f));
-            position = Vector3.Lerp(position, newPos, followSpeed * Time.deltaTime);
+            position = Vector3.Slerp(position, newPos, followSpeed * Time.deltaTime);
             rotation = Quaternion.Lerp(rotation, newRot, rotationSpeed * Time.deltaTime);
             transform.position = position;
             transform.rotation = rotation;
