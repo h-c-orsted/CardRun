@@ -35,7 +35,6 @@ public class Player : MonoBehaviour
         {
             relativeRotation += 90;
         }
-        Debug.Log("Rotation" + relativeRotation);
         transform.Rotate(0, 90, 0, Space.World);
         movingAlongX = !movingAlongX;
         xPosLastTrigger = transform.position.x;
@@ -52,7 +51,6 @@ public class Player : MonoBehaviour
         {
             relativeRotation += -90;
         }
-        Debug.Log("Rotation" + relativeRotation);
         transform.Rotate(0, -90, 0, Space.World);
         movingAlongX = !movingAlongX;
         xPosLastTrigger = transform.position.x;
