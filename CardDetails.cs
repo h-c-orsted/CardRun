@@ -10,6 +10,9 @@ public class CardDetails : MonoBehaviour
 
     public int cardID;
 
+    public bool hoveringAnimation = true;
+    bool animationUp = false;
+
 
     GameObject gameMaster;
 
@@ -24,8 +27,10 @@ public class CardDetails : MonoBehaviour
 
 
         // Find card face according to settings
-        cardFaceMaterial = Resources.Load<Material>(string.Concat("CardFaces/Materials/", color * 13 + value));
-        Debug.Log(string.Concat("CardFaces/Materials/", color * 13 + value, ".mat"));
+        //cardFaceMaterial = Resources.Load<Material>(string.Concat("Cards/Materials/", color * 13 + value));
+        cardFaceMaterial = Resources.Load("Cards/Materials/36", typeof(Material)) as Material;
+        Debug.Log(string.Concat("Cards/Materials/", color * 13 + value, ".mat"));
+        Debug.Log(cardFaceMaterial);
 
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
         meshRenderer.material = cardFaceMaterial;
@@ -37,6 +42,17 @@ public class CardDetails : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        /*if (hoveringAnimation)
+        {
+            if (animationUp)
+            {
+                transform.Translate(Vector3.up * Time.deltaTime * 10, Space.Self);
+            } else
+            {
+                transform.Translate(Vector3.up * Time.deltaTime * 100 * (-1), Space.Self);
+            }
+            animationUp = !animationUp;
+            
+        }*/
     }
 }
