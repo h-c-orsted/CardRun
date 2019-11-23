@@ -26,12 +26,14 @@ public class SmoothCamera : MonoBehaviour
 
     void FixedUpdate()
     {
+        // Only run if an object has been assigned to script
         if (target)
         {
             newPos = target.position;
             newPos.y += distance + offsetHeight;
 
 
+            // Determine what direction to add offset to
             switch (target.GetComponent<Player>().relativeRotation / 90)
             {
                 case 0:
@@ -51,6 +53,7 @@ public class SmoothCamera : MonoBehaviour
                     break;
             }
 
+            // Change position and rotation with Slerp and Lerp so that they transform smoothly
             newRot = Quaternion.Euler(new Vector3(15f, target.rotation.eulerAngles.y, 0f));
             position = Vector3.Slerp(position, newPos, followSpeed * Time.deltaTime);
             rotation = Quaternion.Lerp(rotation, newRot, rotationSpeed * Time.deltaTime);
