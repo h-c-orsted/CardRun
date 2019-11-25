@@ -77,8 +77,8 @@ public class Player : MonoBehaviour
         else
         {
             // Die
-            //Debug.Log("Die");
             isDead = true;
+            isMoving = false;
             countdownTimer.SetText("Dead");
             countdownTimerGO.SetActive(true);
             return false;
@@ -169,13 +169,14 @@ public class Player : MonoBehaviour
         }
 
 
-        // Calculate score based on how far the player has traveled and set score text. If score is below 0 (which it is in countdown, then set to 0)
-        score = Mathf.FloorToInt(movementSpeed * (Time.timeSinceLevelLoad - 19)) < 0 ? 0 : Mathf.FloorToInt(movementSpeed * (Time.timeSinceLevelLoad - 19));
-        scoreText.SetText("{0:0}", score);
-
 
         if (isMoving)
         {
+            // Calculate score based on how far the player has traveled and set score text. If score is below 0 (which it is in countdown, then set to 0)
+            score = Mathf.FloorToInt(movementSpeed * (Time.timeSinceLevelLoad - 19)) < 0 ? 0 : Mathf.FloorToInt(movementSpeed * (Time.timeSinceLevelLoad - 19));
+            scoreText.SetText("{0:0}", score);
+
+
             // This is for testing purpose so that we don't need a phone to activate swipe gestures
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -194,6 +195,7 @@ public class Player : MonoBehaviour
         }
 
         
+
         if (Mathf.Abs(xPosLastTrigger-transform.position.x) > 49)
         {
             GameObject.FindGameObjectWithTag("PathGenerator").GetComponent<PathGenerator>().generatePath();
