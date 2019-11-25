@@ -151,6 +151,7 @@ public class Player : MonoBehaviour
         } else if (Mathf.FloorToInt(Time.timeSinceLevelLoad) >= 18 && Mathf.FloorToInt(Time.timeSinceLevelLoad) < 21)
         {
             countdownTimer.SetText("GO!");
+            transform.Translate(0, 0, movementSpeed * Time.deltaTime);
             isMoving = true;
         } else
         {
@@ -162,7 +163,7 @@ public class Player : MonoBehaviour
 
 
             // Move player every frame after countdown
-            if (!isDead)
+            if (isMoving && !isDead)
             {
                 transform.Translate(0, 0, movementSpeed * Time.deltaTime);
             }
