@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     public int movementSpeed = 40;
     public float jumpForce = 5;
 
+    public bool isMoving = false;
+
     public GameObject countdownTimerGO; 
     TextMeshProUGUI countdownTimer;
 
@@ -149,6 +151,7 @@ public class Player : MonoBehaviour
         } else if (Mathf.FloorToInt(Time.timeSinceLevelLoad) >= 18 && Mathf.FloorToInt(Time.timeSinceLevelLoad) < 21)
         {
             countdownTimer.SetText("GO!");
+            isMoving = true;
         } else
         {
             scoreTextGO.SetActive(true);
@@ -171,20 +174,24 @@ public class Player : MonoBehaviour
         scoreText.SetText("{0:0}", score);
 
 
-        // This is for testing purpose so that we don't need a phone to activate swipe gestures
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (isMoving)
         {
-            //GetComponent<Rigidbody>().AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
-        }
+            // This is for testing purpose so that we don't need a phone to activate swipe gestures
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                //GetComponent<Rigidbody>().AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+            }
 
-        if (Input.GetKeyDown(KeyCode.A)) {
-            TurnLeft();
-        }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                TurnLeft();
+            }
 
-        if (Input.GetKeyDown(KeyCode.D)) {
-            TurnRight();
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                TurnRight();
+            }
         }
-
 
         
         if (Mathf.Abs(xPosLastTrigger-transform.position.x) > 49)
@@ -209,18 +216,21 @@ public class Player : MonoBehaviour
 
     private void SwipeDetector_OnSwipe(SwipeData data)
     {
-        // Rotate 90 degrees when a swipe is detected
-        if (data.Direction == SwipeDirection.Right)
+        if (isMoving)
         {
-            TurnRight();
-        }
-        else if (data.Direction == SwipeDirection.Left)
-        {
-            TurnLeft();
-        }
-        else if (data.Direction == SwipeDirection.Up)
-        {
-            //GetComponent<Rigidbody>().AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+            // Rotate 90 degrees when a swipe is detected
+            if (data.Direction == SwipeDirection.Right)
+            {
+                TurnRight();
+            }
+            else if (data.Direction == SwipeDirection.Left)
+            {
+                TurnLeft();
+            }
+            else if (data.Direction == SwipeDirection.Up)
+            {
+                //GetComponent<Rigidbody>().AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+            }
         }
     }
 
