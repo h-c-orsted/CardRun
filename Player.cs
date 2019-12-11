@@ -170,7 +170,6 @@ public class Player : MonoBehaviour
         }
 
 
-
         if (isMoving)
         {
             // Calculate score based on how far the player has traveled and set score text. If score is below 0 (which it is in countdown, then set to 0)
@@ -197,13 +196,13 @@ public class Player : MonoBehaviour
 
         
 
-        if (Mathf.Abs(xPosLastTrigger-transform.position.x) > 49)
+        if (Mathf.Abs(xPosLastTrigger-transform.position.x) > 46)
         {
             GameObject.FindGameObjectWithTag("PathGenerator").GetComponent<PathGenerator>().generatePath();
             xPosLastTrigger = transform.position.x;
         }
 
-        if (Mathf.Abs(zPosLastTrigger-transform.position.z) > 49)
+        if (Mathf.Abs(zPosLastTrigger-transform.position.z) > 46)
         {
             GameObject.FindGameObjectWithTag("PathGenerator").GetComponent<PathGenerator>().generatePath();
             zPosLastTrigger = transform.position.z;
