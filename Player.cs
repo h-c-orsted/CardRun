@@ -165,7 +165,8 @@ public class Player : MonoBehaviour
             // Move player every frame after countdown
             if (isMoving && !isDead)
             {
-                transform.Translate(0, 0, movementSpeed * Time.deltaTime);
+                //transform.Translate(0, 0, movementSpeed * Time.deltaTime);
+                transform.Translate(Vector3.forward * movementSpeed * Time.fixedDeltaTime, Space.Self);
             }
         }
 
